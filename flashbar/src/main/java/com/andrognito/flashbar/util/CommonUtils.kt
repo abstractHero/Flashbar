@@ -35,6 +35,12 @@ internal fun Activity.getNavigationBarPosition(): NavigationBarPosition {
 }
 
 internal fun Activity.getNavigationBarSizeInPx(): Int {
+    val resourceId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+
+    if (resourceId > 0) {
+        return resources.getDimensionPixelSize(resourceId)
+    }
+
     val realScreenSize = getRealScreenSize()
     val appUsableScreenSize = getAppUsableScreenSize()
     val navigationBarPosition = getNavigationBarPosition()
