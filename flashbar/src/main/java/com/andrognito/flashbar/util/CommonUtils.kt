@@ -35,12 +35,6 @@ internal fun Activity.getNavigationBarPosition(): NavigationBarPosition {
 }
 
 internal fun Activity.getNavigationBarSizeInPx(): Int {
-    val resourceId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-
-    if (resourceId > 0) {
-        return resources.getDimensionPixelSize(resourceId)
-    }
-
     val realScreenSize = getRealScreenSize()
     val appUsableScreenSize = getAppUsableScreenSize()
     val navigationBarPosition = getNavigationBarPosition()
@@ -87,11 +81,10 @@ private fun Activity.getRealScreenSize(): Point {
 }
 
 private fun Activity.getAppUsableScreenSize(): Point {
-    val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    val defaultDisplay = windowManager.defaultDisplay
-    val size = Point()
-    defaultDisplay.getSize(size)
-    return size
+    val decorViewRect = Rect()
+    window.decorView.getWindowVisibleDisplayFrame(decorViewRect)
+
+    return Point(decorViewRect.right, decorViewRect.bottom)
 }
 
 inline fun <T : View> T.afterMeasured(crossinline f: T.() -> Unit) {
